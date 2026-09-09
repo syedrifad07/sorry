@@ -1,0 +1,617 @@
+/* ==========================================================================
+   1. TOKENS — EDIT ME
+   Change these to restyle the whole site. Colors follow the brief:
+   warm cream background, blush pink accents, soft rose, warm brown text.
+   ========================================================================== */
+:root {
+  --bg:            #FFF7ED; /* page background */
+  --cream:         #FDF1E3; /* paper / card background */
+  --blush:         #F6D6D6; /* secondary accent */
+  --rose:          #E8A9A9; /* accent / seal / progress */
+  --rose-deep:     #C77F7F; /* darker rose for hover / seal shading */
+  --text:          #5C4545; /* primary warm brown text */
+  --text-soft:     #8A7268; /* secondary, lighter text */
+  --light-accent:  #F9E4E4; /* light card washes */
+  --paper-edge:    rgba(92, 69, 69, 0.12);
+  --shadow-soft:   rgba(92, 69, 69, 0.16);
+
+  --font-heading: 'Cormorant Garamond', 'Georgia', serif;
+  --font-body:    'Lora', 'Georgia', serif;
+  --font-hand:    'Caveat', cursive;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ==========================================================================
+   2. RESET & BASE
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--rose-deep);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   3. BACKGROUND DECORATION — soft blurred circles, grain, drifting particles
+   ========================================================================== */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.55;
+  background: var(--blush);
+}
+
+.bg-circle--one {
+  width: 38vw;
+  height: 38vw;
+  top: -10%;
+  left: -8%;
+  animation: driftOne 26s ease-in-out infinite;
+}
+
+.bg-circle--two {
+  width: 30vw;
+  height: 30vw;
+  bottom: -12%;
+  right: -6%;
+  background: var(--light-accent);
+  animation: driftTwo 30s ease-in-out infinite;
+}
+
+@keyframes driftOne {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(3%, 4%); }
+}
+
+@keyframes driftTwo {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-4%, -3%); }
+}
+
+.bg-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+.bg-particles {
+  position: absolute;
+  inset: 0;
+}
+
+.particle {
+  position: absolute;
+  bottom: -6%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--rose);
+  opacity: 0;
+  animation-name: floatUp;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  10%  { opacity: 0.5; }
+  90%  { opacity: 0.35; }
+  100% { transform: translateY(-110vh) translateX(20px); opacity: 0; }
+}
+
+/* ==========================================================================
+   4. MUSIC TOGGLE
+   ========================================================================== */
+.music-toggle {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 50;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--paper-edge);
+  background: var(--cream);
+  color: var(--rose-deep);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px var(--shadow-soft);
+  transition: transform 0.3s var(--ease-soft), background 0.3s ease;
+}
+
+.music-toggle:hover {
+  transform: scale(1.06);
+}
+
+.music-toggle[aria-pressed="true"] .music-toggle__icon {
+  animation: pulseNote 1.6s ease-in-out infinite;
+}
+
+@keyframes pulseNote {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+
+.music-toggle.is-disabled .music-toggle__icon {
+  animation: noNote 0.4s ease;
+}
+
+@keyframes noNote {
+  25% { transform: translateX(-2px); opacity: 0.5; }
+  75% { transform: translateX(2px); opacity: 0.5; }
+}
+
+/* ==========================================================================
+   5. SCENES — shared
+   ========================================================================== */
+.scene {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ==========================================================================
+   6. SCENE 1 — ENVELOPE
+   ========================================================================== */
+.scene--envelope {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 32px;
+  text-align: center;
+  transition: opacity 0.9s var(--ease-soft), filter 0.9s var(--ease-soft);
+}
+
+.scene--envelope.is-fading {
+  opacity: 0;
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.scene__eyebrow {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.scene__hint {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-size: 1.4rem;
+  color: var(--text-soft);
+  opacity: 0.85;
+}
+
+/* --- Envelope component ------------------------------------------------- */
+.envelope {
+  position: relative;
+  width: 260px;
+  height: 180px;
+  background: none;
+  border: none;
+  padding: 0;
+  perspective: 900px;
+  animation: floatEnvelope 5s ease-in-out infinite;
+}
+
+.envelope:hover .envelope__body {
+  transform: translateY(-2px);
+}
+
+@keyframes floatEnvelope {
+  0%, 100% { transform: translateY(0) rotate(-0.6deg); }
+  50%      { transform: translateY(-10px) rotate(0.6deg); }
+}
+
+.envelope__shadow {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  width: 70%;
+  height: 18px;
+  background: radial-gradient(ellipse at center, var(--shadow-soft) 0%, transparent 70%);
+  transform: translateX(-50%);
+  animation: shadowPulse 5s ease-in-out infinite;
+}
+
+@keyframes shadowPulse {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.9; }
+  50%      { transform: translateX(-50%) scale(0.85); opacity: 0.6; }
+}
+
+.envelope__body {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.4s var(--ease-soft);
+}
+
+/* back panel — sits behind everything, revealed once flap opens */
+.envelope__back {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: var(--cream);
+  box-shadow: 0 18px 34px var(--shadow-soft);
+}
+
+/* the letter paper, tucked inside, peeks up on open */
+.envelope__paper {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 6px;
+  height: 88%;
+  background: #FFFDF9;
+  border: 1px solid var(--paper-edge);
+  border-radius: 3px;
+  transform: translateY(10%);
+  transition: transform 0.9s 0.15s var(--ease-soft);
+  box-shadow: 0 6px 16px var(--shadow-soft);
+}
+
+/* front panel of the envelope, drawn with clipped triangular fold */
+.envelope__front {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: linear-gradient(180deg, var(--blush) 0%, var(--cream) 55%);
+  clip-path: polygon(0 22%, 50% 58%, 100% 22%, 100% 100%, 0 100%);
+  box-shadow: inset 0 0 0 1px var(--paper-edge);
+}
+
+/* flap — rotates open around its top edge */
+.envelope__flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 62%;
+  background: linear-gradient(160deg, var(--blush) 0%, var(--rose) 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  backface-visibility: hidden;
+  transition: transform 0.9s var(--ease-soft);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 14%;
+}
+
+.envelope__seal {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--rose-deep);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  box-shadow: 0 3px 8px var(--shadow-soft);
+  transition: opacity 0.4s ease;
+}
+
+/* --- Opened state --------------------------------------------------------
+   Toggled via JS by adding .is-open to #envelope
+   --------------------------------------------------------------------- */
+.envelope.is-open {
+  animation: none;
+}
+
+.envelope.is-open .envelope__shadow {
+  animation: none;
+  opacity: 0.5;
+}
+
+.envelope.is-open .envelope__flap {
+  transform: rotateX(180deg);
+}
+
+.envelope.is-open .envelope__seal {
+  opacity: 0;
+}
+
+.envelope.is-open .envelope__paper {
+  transform: translateY(-46%);
+}
+
+/* envelope lifts and fades as the scene transitions to the letter */
+.envelope.is-leaving {
+  transition: transform 1s var(--ease-soft), opacity 1s var(--ease-soft);
+  transform: translateY(-24px) scale(0.94);
+  opacity: 0;
+}
+
+/* ==========================================================================
+   7. SCENE 2 — LETTER
+   ========================================================================== */
+.scene--letter {
+  display: none;
+  justify-content: center;
+  padding: 90px 24px 120px;
+  opacity: 0;
+  transition: opacity 1s var(--ease-soft);
+}
+
+.scene--letter.is-visible {
+  display: flex;
+  opacity: 1;
+}
+
+/* reading progress ---------------------------------------------------- */
+.progress-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: transparent;
+  z-index: 40;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--rose-deep);
+  transition: width 0.15s linear;
+}
+
+.progress-label {
+  position: fixed;
+  top: 16px;
+  left: 24px;
+  z-index: 40;
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: var(--text-soft);
+  font-family: var(--font-body);
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* letter card ----------------------------------------------------------- */
+.letter {
+  width: 100%;
+  max-width: 700px;
+  background: var(--cream);
+  border: 1px solid var(--paper-edge);
+  border-top: 3px solid var(--rose);
+  border-radius: 10px;
+  padding: clamp(32px, 6vw, 72px) clamp(24px, 7vw, 76px);
+  box-shadow: 0 30px 70px -20px var(--shadow-soft), 0 2px 8px var(--shadow-soft);
+  position: relative;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1s 0.2s var(--ease-soft), transform 1s 0.2s var(--ease-soft);
+}
+
+.letter.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.letter__header {
+  margin-bottom: 24px;
+}
+
+.letter__date {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  color: var(--rose-deep);
+}
+
+.letter__body {
+  max-width: 62ch;
+  margin: 0 auto;
+}
+
+.letter__greeting {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 500;
+  margin: 0 0 1.4em;
+}
+
+.letter__p {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--text);
+  margin: 0 0 1.3em;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.8s var(--ease-soft), transform 0.8s var(--ease-soft);
+}
+
+.letter__p.is-in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.letter__p--emphasis {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--rose-deep);
+}
+
+.letter__signoff {
+  margin-top: 2em;
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.8s var(--ease-soft), transform 0.8s var(--ease-soft);
+}
+
+.letter__signoff.is-in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* final section ----------------------------------------------------------*/
+.letter__final {
+  margin-top: 3.5em;
+  padding-top: 2.5em;
+  border-top: 1px solid var(--paper-edge);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.9s var(--ease-soft), transform 0.9s var(--ease-soft);
+}
+
+.letter__final.is-in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.letter__final-line {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  color: var(--text);
+}
+
+.letter__final-line--thanks {
+  margin-top: 0.3em;
+  font-style: italic;
+}
+
+.heart-beat {
+  margin: 22px auto;
+  width: fit-content;
+  color: var(--rose-deep);
+  font-size: 1.6rem;
+  animation: heartBeat 2.4s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50%      { transform: scale(1.14); opacity: 1; }
+}
+
+.letter__final-note {
+  margin: 0 0 1.8em;
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: var(--text-soft);
+}
+
+.close-btn {
+  background: transparent;
+  border: 1px solid var(--rose);
+  color: var(--rose-deep);
+  padding: 12px 30px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s var(--ease-soft);
+}
+
+.close-btn:hover {
+  background: var(--rose);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   8. RESPONSIVE — MOBILE
+   ========================================================================== */
+@media (max-width: 600px) {
+  .envelope {
+    width: 210px;
+    height: 145px;
+  }
+
+  .scene--letter {
+    padding: 70px 16px 90px;
+  }
+
+  .letter {
+    border-radius: 8px;
+    padding: 36px 20px;
+  }
+
+  .letter__body {
+    max-width: 100%;
+  }
+
+  .music-toggle {
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .progress-label {
+    left: 16px;
+    top: 12px;
+    font-size: 0.72rem;
+  }
+}
+
+/* ==========================================================================
+   9. REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.2s !important;
+    scroll-behavior: auto !important;
+  }
+
+  .envelope {
+    animation: none;
+  }
+
+  .bg-particles {
+    display: none;
+  }
+}

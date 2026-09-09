@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>For You</title>
+
+<!-- ============================================================
+     FONTS
+     Headings: Cormorant Garamond (elegant serif)
+     Body:     Lora (readable serif)
+     Accents:  Caveat (handwritten touches)
+     ============================================================ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Lora:ital,wght@0,400;0,500;1,400&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Decorative background layer: soft blurred circles + grain + drifting particles -->
+  <div class="bg" aria-hidden="true">
+    <div class="bg-circle bg-circle--one"></div>
+    <div class="bg-circle bg-circle--two"></div>
+    <div class="bg-grain"></div>
+    <div class="bg-particles" id="particles"></div>
+  </div>
+
+  <!-- ============================================================
+       CONTROLS — music toggle. Sits quietly in the corner throughout.
+       ============================================================ -->
+  <button id="musicToggle" class="music-toggle" aria-label="Play background music" aria-pressed="false">
+    <span class="music-toggle__icon">♫</span>
+  </button>
+
+  <!-- ============================================================
+       SCENE 1 — LANDING / ENVELOPE
+       ============================================================ -->
+  <main id="envelopeScene" class="scene scene--envelope">
+    <p class="scene__eyebrow">There's something I want to tell you&hellip;</p>
+
+    <button id="envelope" class="envelope" aria-label="Open the letter">
+      <span class="envelope__shadow" aria-hidden="true"></span>
+
+      <span class="envelope__body" aria-hidden="true">
+        <!-- back panel (visible once the flap opens) -->
+        <span class="envelope__back"></span>
+
+        <!-- letter peeking out, revealed on open -->
+        <span class="envelope__paper"></span>
+
+        <!-- front panel with triangular fold lines -->
+        <span class="envelope__front"></span>
+
+        <!-- flap with wax-style heart seal -->
+        <span class="envelope__flap">
+          <span class="envelope__seal">&#10084;</span>
+        </span>
+      </span>
+    </button>
+
+    <p class="scene__hint">Click the envelope</p>
+  </main>
+
+  <!-- ============================================================
+       SCENE 2 — THE LETTER
+       ============================================================ -->
+  <section id="letterScene" class="scene scene--letter" aria-hidden="true">
+
+    <!-- subtle reading-progress line -->
+    <div class="progress-track" aria-hidden="true">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <p class="progress-label" id="progressLabel">Reading my letter &middot; 0%</p>
+
+    <article class="letter" id="letter">
+
+      <header class="letter__header">
+        <p class="letter__date">A letter for you</p>
+      </header>
+
+      <!-- ==========================================================
+           EDIT ME — LETTER TEXT
+           Replace the paragraphs below with your own words.
+           Each <p class="letter__p"> is one paragraph and will
+           gently fade in as she scrolls past it.
+           ========================================================== -->
+      <div class="letter__body">
+        <p class="letter__greeting">Hey,</p>
+
+        <p class="letter__p">I know you're angry with me, and honestly, I don't blame you.</p>
+
+        <p class="letter__p">Ami Sorry bollew sob thik hobe nh ba tumar mon jora lagbe nh ami jani mukhe bolte pari nh onek kotha tai eikhane bolchi.</p>
+
+        <p class="letter__p">Ami hoyto valo nh ami hoyto kharap sobar life nosto kore dei hoyto tumar taw kore disi but trust me ami kokhono seita chai nai .</p>
+
+        <p class="letter__p">Ami hoyto tumar valo rifu hote pari nai, valobasha dekhaite pari nh hudai call dei hudai messege dei hudai sorry koi hoyto tumake haraite chai nh dekhei emon kori hoyto hariye felsi hoyto tumi amake ghrina koro hoyto onek beshi kosto disi tai hoyto bolo more jaitam.</p>
+
+        <p class="letter__p">Ami bhabtam hoyto tumi amake onek valobasho kokhono chere jaba na but eita bujhi nai amar karone eita hobe amar karone eto mair khaiba amar karone eto kichu hobe hoyto manush tumare bole amar satthe nh thakte hoyto thik e bole edike ar ki bolmu ami :) .</p>
+
+        <p class="letter__p">eita lekhte lekhte cokh bhore ashtase but tarporew boli tumi hoyto zemon bhabo ami temon nh ami tumake onek beshi valobashi ar ajibon valo beshe jabo hoyto amake onek kothe bolso kichui rakhte pari nai but ekta kotha thiki rakhbo oita holo khub taratari more jabo amar buker pura ekta ongsho tumake bhalobeshe jabe .</p>
+
+        <p class="letter__p">Somossa nai tumar w freedom ache tumar zodi mone ami thik na tumi aro valo manush deserve koro eitaw sotti zodi chaw zodi tumar iccha thake amake ektu change hower suzuk deyar ami hobo ami tumar mukh rakhbo emon nh ze change hoi nai hoisi sob bad habit sesh ei ektae atkiye achilo eitaw sesh safai dibo nh ekta chance khujtesi karon ami tumay haraite chai nh asholew onek bhalo bashi tumay ami zodi tumar mone hoy ekta chance deya jay reply diyo ami tumay nirash kormu nh.</p>
+
+        <p class="letter__p">onek beshi kotha hoyto boltasi , eituku e bolbo ar onek beshi bhalobashi onek onek onek beshi, tumi amar sob tumay chara valo nai ami , sorry, ar kichu bolte partasi nh cokhe jhapsha dekhtasi,jaiyo nh hea :) bollam arki thakte tumar iccha thakle    </p>
+
+        <p class="letter__p letter__p--emphasis">Parle maf kore dio </p>
+
+        <p class="letter__signoff">— <span id="senderName">Tumar rifu :) </span></p>
+      </div>
+
+      <!-- ==========================================================
+           FINAL SECTION
+           ========================================================== -->
+      <div class="letter__final">
+        <p class="letter__final-line">If you're still reading this&hellip;</p>
+        <p class="letter__final-line letter__final-line--thanks">Thank you.</p>
+
+        <div class="heart-beat" aria-hidden="true">&#10084;</div>
+
+        <p class="letter__final-note">I don't expect anything from you.<br>I just wanted you to know I'm sorry.</p>
+
+        <button id="closeLetter" class="close-btn">Close the letter</button>
+      </div>
+
+    </article>
+  </section>
+
+  <!-- ============================================================
+       AUDIO
+       Drop your own files into /assets and update the src below.
+       Nothing plays automatically — the person has to press play.
+       ============================================================ -->
+  <audio id="bgMusic" loop preload="none">
+    <!-- EDIT ME — add your music file, e.g.: -->
+    <!-- <source src="assets/music.mp3" type="audio/mpeg"> -->
+  </audio>
+
+  <audio id="sfxOpen" preload="none">
+    <!-- <source src="assets/envelope-open.mp3" type="audio/mpeg"> -->
+  </audio>
+
+  <audio id="sfxClick" preload="none">
+    <!-- <source src="assets/soft-click.mp3" type="audio/mpeg"> -->
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
